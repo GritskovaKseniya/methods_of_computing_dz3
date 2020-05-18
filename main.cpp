@@ -5,11 +5,15 @@
 using namespace std;
 
 main(){
+    int n = 20000;
     double x, y, z;
+    double tempX, tempY, tempZ;
+    tempX = tempY = tempZ = 0;
+
     ofstream fout;          // поток для записи
     fout.open("D:\\sample3D.txt"); // окрываем файл для записи
     if (fout.is_open()){
-        for(int i = 0; i < 20000; i++){
+        for(int i = 0; i < n; i++){
             //генерируем случайные числа в диапазоне от 0 до 1
             x = rand() / double( RAND_MAX ); 
             y = rand() / double( RAND_MAX );
@@ -40,11 +44,15 @@ main(){
                 break;
             }else{
                 stringstream sin(line);
-                sin >> x >> y >> z;            
+                sin >> x >> y >> z;           
             
                 ksi = x*y*(z*z);
 
-                std::cout << "KSI: " << ksi << std::endl;
+                tempX += x; 
+                tempY += y;
+                tempZ += z;
+
+                //std::cout << "KSI: " << ksi << std::endl;
             
                 for(double i = 0; i < 1; i+=0.01){ // i левый конец полуинтервала
                     double r = i + 0.01; //правый конец полуинтервала
@@ -72,6 +80,19 @@ main(){
         }
     }
     file.close();
+
+    ofstream file2;   
+    file2.open("SampleMean.txt");
+    if (file2.is_open()){
+        //выборочное среднее
+        x = tempX/n;
+        y = tempY/n;
+        z = tempZ/n;
+        file2 << x << " " << y << " " << z << endl;
+    }
+    file2.close();
+
+
 
     std::cout << "End of program" << std::endl;
     return 0;
