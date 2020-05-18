@@ -3,41 +3,33 @@
 #include <fstream>
 using namespace std;
 
-main(){
+
+double createSelection (){
     double x, y, z;
-    ofstream fout;          // поток для записи
-    fout.open("D:\\sample3D.txt"); // окрываем файл для записи
-    if (fout.is_open()){
+    ofstream out;          // поток для записи
+    out.open("D:\\sample3D.txt"); // окрываем файл для записи
+    if (out.is_open()){
         for(int i = 0; i < 20; i++){
-            //генерируем случайные числа в диапазоне от 0 до 1
-            x = rand() / double( RAND_MAX ); 
+            x = rand() / double( RAND_MAX );
             y = rand() / double( RAND_MAX );
             z = rand() / double( RAND_MAX );
-            // проверяем, чтобы эти переменные соответствовали условию x^2+y^2+z^2 < 1
-            double d = x*x + y*y + z*z; 
+            double d = x*x + y*y + z*z;
             if(d < 1){
-                //записываем переменые в файл 
-                fout << x << " " << y << " " << z << " " << endl;
+                cout << " d" << i << " = " << d << endl;
+                cout << x*x << " " << y*y << " " << z*z << " " << endl;
+                out << x << " " << y << " " << z << " " << endl;
             } else i--; 
         }
     }
-    fout.close();
+
+}
+
+int createHistogramData (){
     
-    double ksi; //случайная величина кси, которая задается как x*y*(z^2)
-    int histogramData[100]; //создали массив для данных гистограммы
+}
 
-    // инициализируем его нулями
-    for(int i = 0; i < sizeof(histogramData); i++){
-        histogramData[i] = 0;
-    }
-
-    ifstream fin("D:\\sample3D.txt"); //открыли файл для чтения
-    //если файл не закончился
-    if(!fin.eof()){
-        fin >> x >> y >> z;
-        ksi = x*y*(z*z);
-    }
-    fin.close();     // закрываем файл
+main(){  
+    createSelection();
 
     std::cout << "End of program" << std::endl;
     return 0;
