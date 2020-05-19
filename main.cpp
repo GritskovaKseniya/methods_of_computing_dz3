@@ -2,13 +2,13 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 using namespace std;
 
 main(){
     int n = 20000;
-    double x, y, z;
-    double tempX, tempY, tempZ;
-    tempX = tempY = tempZ = 0;
+    double x, y, z, sum , sum2;
+    sum = 0; sum2 = 0;
     double ksi; //случайная величина кси, которая задается как x*y*(z^2)
     int histogramData[100]; //создали массив для данных гистограммы
     for(int i = 0; i < 100; i++){
@@ -34,6 +34,8 @@ main(){
     }
     fout.close();
 
+
+
     ifstream fin("D:\\sample3D.txt"); //открыли файл для чтения
     if(fin.is_open()){
 
@@ -44,11 +46,11 @@ main(){
                 break;
             }else{
                 stringstream sin(line);
-                sin >> x >> y >> z;           
+                sin >> x >> y >> z;   
+                //вычисляем кси       
                 ksi = x*y*(z*z);
-                tempX += x; 
-                tempY += y;
-                tempZ += z;            
+                sum += ksi;
+                sum2 = sum2 + ksi*ksi;
                 for(double i = 0; i < 1; i+=0.01){ // i левый конец полуинтервала
                     double r = i + 0.01; //правый конец полуинтервала
                     if((ksi > i)&(ksi<= r)){
@@ -60,12 +62,18 @@ main(){
         }
     }
     fin.close(); 
+    
 
     ofstream file;   
     file.open("HistogramData.txt");
     for(int i = 0; i < 100; i++){
         if (file.is_open()){
+            //записываем данные из массива в файл
             file << histogramData[i] << endl;
+            /*double t1  = i;
+            double t = t1/100;
+            double d = t +0.01;
+            cout << "[" << t << " ; " << d << "]" << " : " <<histogramData[i] << endl;*/
         }
     }
     file.close();
@@ -73,11 +81,17 @@ main(){
     ofstream file2;   
     file2.open("SampleMean.txt");
     if (file2.is_open()){
-        //выборочное среднее
-        x = tempX/n;
-        y = tempY/n;
-        z = tempZ/n;
-        file2 << x << " " << y << " " << z << endl;
+        //выборочное среднее (x c чертой)
+        double sampleMean = sum/n;
+        //x^2 с чертой
+        double dev = sum2/n;
+        // среднеквадратичное отклонение (сигма)
+        double sigma = sqrt(dev - (sampleMean*sampleMean));
+        double sigmaX = sigma/(sqrt(n));
+
+        file2 << "Sample mean: " << sampleMean << endl;
+        file2 << "Среднеквдратичное отклонение: " << sigma << endl;
+        file2 << "Среднеквдратичное отклонение для устредненного икса: " << sigmaX << endl;
     }
     file2.close();
 
