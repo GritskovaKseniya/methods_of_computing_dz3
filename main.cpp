@@ -92,6 +92,7 @@ main(){
         file2 << "Sample mean: " << sampleMean << endl;
         file2 << "Среднеквдратичное отклонение: " << sigma << endl;
         file2 << "Среднеквдратичное отклонение для устредненного икса: " << sigmaX << endl;
+        file2 << "Доверительный интервал: [" << sampleMean - 2*sigma << "; " << sampleMean + 2*sigma << "]" << endl; 
     }
     file2.close();
 
